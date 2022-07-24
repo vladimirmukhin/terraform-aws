@@ -22,12 +22,7 @@ resource "aws_instance" "public" {
   vpc_security_group_ids      = [aws_security_group.public.id]
   subnet_id                   = aws_subnet.public[0].id
   
-  user_data = <<EOF
-#!/bin/bash
-yum update -y
-yum install -y httpd
-systemctl start httpd && systemctl enable httpd
-EOF
+  user_data = file("user-data.sh")
 
   tags = {
     Name = "${var.env_code}-public"
