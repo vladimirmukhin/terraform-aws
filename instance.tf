@@ -20,7 +20,9 @@ resource "aws_instance" "public" {
   instance_type               = "t3.micro"
   key_name                    = "main"
   vpc_security_group_ids      = [aws_security_group.public.id]
-  subnet_id                   = aws_subnet.public[1].id
+  subnet_id                   = aws_subnet.public[0].id
+  
+  user_data = file("user-data.sh")
 
   tags = {
     Name = "${var.env_code}-public"
@@ -36,6 +38,14 @@ resource "aws_security_group" "public" {
     description      = "SSH from public"
     from_port        = 22
     to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["98.180.121.31/32"]
+  }
+
+  ingress {
+    description      = "HTTP from public"
+    from_port        = 80
+    to_port          = 80
     protocol         = "tcp"
     cidr_blocks      = ["98.180.121.31/32"]
   }
