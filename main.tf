@@ -38,8 +38,8 @@ resource "aws_internet_gateway" "main" {
 
 resource "aws_eip" "nat" {
   count = length(var.public_cidr)
-  
-  vpc      = true
+
+  vpc = true
 
   tags = {
     Name = "${var.env_code}-nat${count.index}"
